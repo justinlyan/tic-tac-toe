@@ -1,43 +1,80 @@
 function Gameboard(gameBoard) {
-  const checkForWin = (Player, gamePiece) => {
-    const winConditions = [
-      [gameBoard[0][0], gameBoard[0][1], gameBoard[0][2]],
-      [gameBoard[1][0], gameBoard[1][1], gameBoard[1][2]],
-      [gameBoard[2][0], gameBoard[2][1], gameBoard[2][2]],
-      [gameBoard[0][0], gameBoard[1][0], gameBoard[2][0]],
-      [gameBoard[0][1], gameBoard[1][1], gameBoard[2][1]],
-      [gameBoard[0][2], gameBoard[1][2], gameBoard[2][2]],
-      [gameBoard[0][0], gameBoard[1][1], gameBoard[2][2]],
-      [gameBoard[0][2], gameBoard[1][1], gameBoard[2][0]]
-    ];
+  const board = gameBoard
+  const updateBoard = (x, y, gamePiece) => {
+    board[x][y] = gamePiece;
+  };
 
+  const checkForWin = (Player, gamePiece) => {
+    let hasWon = false;
+    const winConditions = [
+      [board[0][0], board[0][1], board[0][2]],
+      [board[1][0], board[1][1], board[1][2]],
+      [board[2][0], board[2][1], board[2][2]],
+      [board[0][0], board[1][0], board[2][0]],
+      [board[0][1], board[1][1], board[2][1]],
+      [board[0][2], board[1][2], board[2][2]],
+      [board[0][0], board[1][1], board[2][2]],
+      [board[0][2], board[1][1], board[2][0]]
+    ];
+    //Goes through win conditions and determines if player has won the game
+    winConditions.forEach((condition) => {
+      if (condition.every((element) => element === gamePiece)) {
+        hasWon = true;
+      }
+    });
     
+    return hasWon;
   }
 
   return {
-    gameBoard,
+    board,
+    updateBoard,
     checkForWin
   }
 }
 
 function Player(name, gamePiece, turn) {
-  
-  const move = () => {
-
-  }
-
-  return {
-    name,
-    gamePiece,
-    turn
-  } 
+  return { name, gamePiece, turn } 
 }
 
-function Game() {
+function GameController() {
+
+  const gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
+
   const Player1 = Player("Player 1", "X", true);
   const Player2 = Player("Player 2", "O", false);
 
-  const gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
+  const move = (x, y) => {
+    if (Player1.turn) {
+      if (gameBoard.board[x][y] === "-") {
+        gameBoard.updateBoard(x, y, Player1.gamePiece);
+        Player1.turn = false;
+        Player2.turn = true;
+      }
+    } else if (Player2.turn) {
+      if (gameBoard.board[x][y] === "-") {
+        gameBoard.updateBoard(x, y, Player2.gamePiece);
+        Player2.turn = false;
+        Player1.turn = true;
+      }
+    }
+    console.log(gameBoard.board);
+    console.log("checking for win");
+  }
+
+  move(0,0);
+  move(0,1);
+  move(0,2);
+
+  if (gameBoard.checkForWin(Player1, Player1.gamePiece)) {
+    console.log("win");
+  } else {
+    console.log("move again");
+  };
 }
 
-Game();
+function startGame() {
+
+}
+
+GameController();
