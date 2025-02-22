@@ -73,8 +73,27 @@ function GameController() {
   };
 }
 
-function startGame() {
+function initializeBoard() {
+  const boardDiv = document.querySelector(".board");
+  const gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
+  const board = gameBoard.board;
 
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell", "unpicked");
+      cell.dataset.x = i;
+      cell.dataset.y = j;
+
+      boardDiv.appendChild(cell);
+    }
+  }
 }
+
+function ScreenController() {
+  
+}
+
+initializeBoard();
 
 GameController();
