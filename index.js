@@ -50,7 +50,7 @@ function ScreenController(gameBoard) {
 
   let currentPlayer = "player1";
 
-  boardDiv.addEventListener("click", (e) => {
+  boardDiv.addEventListener("click", function eventHandler(e) {
     const target = e.target;
     const x = target.dataset.x;
     const y = target.dataset.y;
@@ -62,6 +62,7 @@ function ScreenController(gameBoard) {
       target.innerHTML = `${players[currentPlayer].gamePiece}`;
       if (gameBoard.checkForWin(players[currentPlayer].gamePiece)) {
         winnerDiv.textContent = `${players[currentPlayer].name} wins the game!`;
+        boardDiv.removeEventListener("click", eventHandler);
       } else {
         currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
         winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
