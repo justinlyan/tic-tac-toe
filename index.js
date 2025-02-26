@@ -39,6 +39,8 @@ function Player(name, gamePiece, turn) {
 
 function ScreenController(gameBoard) {
   const boardDiv = document.querySelector(".board");
+  const newGameBtn = document.querySelector(".newGame");
+  const winnerDiv = document.querySelector(".winner");
 
   const Player1 = Player("Player 1", "X", true);
   const Player2 = Player("Player 2", "O", false);
@@ -49,13 +51,12 @@ function ScreenController(gameBoard) {
   }
 
   let currentPlayer = "player1";
+  winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
 
   boardDiv.addEventListener("click", function eventHandler(e) {
     const target = e.target;
     const x = target.dataset.x;
     const y = target.dataset.y;
-
-    const winnerDiv = document.querySelector(".winner");
     
     if (gameBoard.board[x][y] === "-") {
       gameBoard.updateBoard(x, y, players[currentPlayer].gamePiece);
@@ -68,6 +69,12 @@ function ScreenController(gameBoard) {
         winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
       };
     }
+  })
+
+  newGameBtn.addEventListener("click", () => {
+    document.querySelector(".board").innerHTML = "";
+    currentPlayer = "player1";
+    initializeBoard();
   })
 }
 
@@ -88,5 +95,9 @@ function initializeBoard() {
   }
 
   ScreenController(gameBoard);
+}
+
+function resetBoard() {
+
 }
 initializeBoard();
