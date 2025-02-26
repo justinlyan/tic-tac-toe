@@ -1,0 +1,11 @@
+
+.board {
+  display: grid;
+  grid-template: repeat(3, 30px) / repeat(3, 30px);
+}
+
+.cell {
+  cursor: pointer;
+  background-color: grey;
+  border: 1px solid black;
+}
