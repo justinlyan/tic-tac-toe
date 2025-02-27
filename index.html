@@ -9,8 +9,20 @@
 <body>
   <h1>Tic Tac Toe</h1>
   <button class="newGame">New Game</button>
+  <div class="player1Score"></div>
+  <div class="player2Score"></div>
   <div class="winner"></div>
   <div class="board"></div>
+
+  <dialog open>
+    <form method="dialog">
+      <label for="player1">Player 1 (X): </label>
+      <input type="text" id="player1" required>
+      <label for="player2">Player 2 (O): </label>
+      <input type="text" id="player2" required>
+      <button class="makePlayers">START</button>
+    </form>
+  </dialog>
   <script src="./index.js"></script>
 </body>
 </html>
