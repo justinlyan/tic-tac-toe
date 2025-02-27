@@ -66,26 +66,26 @@ function ScreenController(firstPlayer, secondPlayer) {
     const x = target.dataset.x;
     const y = target.dataset.y;
     
-    if (gameBoard.board[x][y] === "-") {
+    if (gameBoard.board[x][y] === "-" && !hasWon) {
       gameBoard.updateBoard(x, y, players[currentPlayer].gamePiece);
       target.innerHTML = `${players[currentPlayer].gamePiece}`;
-      if (!hasWon) {
-        if (gameBoard.checkForWin(players[currentPlayer].gamePiece)) {
-          winnerDiv.textContent = `${players[currentPlayer].name} wins the game!`;
-          players[currentPlayer].updateScore();
-          updateScoreDiv();
-          // boardDiv.removeEventListener("click", eventHandler);
-        } else {
-          currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
-          winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
-        };
-      }
+      if (gameBoard.checkForWin(players[currentPlayer].gamePiece)) {
+        winnerDiv.textContent = `${players[currentPlayer].name} wins the game!`;
+        players[currentPlayer].updateScore();
+        updateScoreDiv();
+        hasWon = true;
+        // boardDiv.removeEventListener("click", eventHandler);
+      } else {
+        currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
+        winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
+      };
     }
   })
 
   newGameBtn.addEventListener("click", () => {
     document.querySelector(".board").innerHTML = "";
     currentPlayer = "player1";
+    hasWon = false;
     newBoard();
   });
 
