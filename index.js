@@ -35,81 +35,84 @@ function Player(name, gamePiece, turn, score) {
 }
 
 function ScreenController(firstPlayer, secondPlayer) {
-  const boardDiv = document.querySelector(".board");
-  const newGameBtn = document.querySelector(".newGame");
-  const winnerDiv = document.querySelector(".winner");
-  const firstPlayerScoreDiv = document.querySelector(".player1Score");
-  const secondPlayerScoreDiv = document.querySelector(".player2Score");
+  if (firstPlayer.name && secondPlayer.name) {
+    const boardDiv = document.querySelector(".board");
+    const newGameBtn = document.querySelector(".newGame");
+    const winnerDiv = document.querySelector(".winner");
+    const firstPlayerScoreDiv = document.querySelector(".player1Score");
+    const secondPlayerScoreDiv = document.querySelector(".player2Score");
 
-  let gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
+    let gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
 
-  const players = {
-    "player1": firstPlayer,
-    "player2": secondPlayer
-  }
+    const players = {
+      "player1": firstPlayer,
+      "player2": secondPlayer
+    }
 
-  let currentPlayer = "player1";
-  let hasWon = false;
-  let move = 0;
+    let currentPlayer = "player1";
+    let hasWon = false;
+    let move = 0;
 
-  winnerDiv.textContent = `${players[currentPlayer].name} turn to move`;
+    winnerDiv.innerHTML = `<span class="current-player">${players[currentPlayer].name}</span> turn to move`;
 
-  const newBoard = () => {
-    gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
-    const board = gameBoard.board;
-  
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell", "unpicked");
-        cell.dataset.x = i;
-        cell.dataset.y = j;
-  
-        boardDiv.appendChild(cell);
+    const newBoard = () => {
+      gameBoard = Gameboard([["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]);
+      const board = gameBoard.board;
+    
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell", "unpicked");
+          cell.dataset.x = i;
+          cell.dataset.y = j;
+    
+          boardDiv.appendChild(cell);
+        }
       }
     }
-  }
 
-  const updateScoreDiv = () => {
-    firstPlayerScoreDiv.textContent = `${players["player1"].name}: ${players["player1"].getScore()}`;
-    secondPlayerScoreDiv.textContent = `${players["player2"].name}: ${players["player2"].getScore()}`;
-  }
-
-  boardDiv.addEventListener("click", function eventHandler(e) {
-    const target = e.target;
-    const x = target.dataset.x;
-    const y = target.dataset.y;
-    
-    if (gameBoard.board[x][y] === "-" && !hasWon) {
-      move++;
-      let current = players[currentPlayer];
-      gameBoard.updateBoard(x, y, current.gamePiece);
-      target.innerHTML = `${current.gamePiece}`;
-      if (gameBoard.checkForWin(current.gamePiece)) {
-        winnerDiv.textContent = `${current.name} wins the game!`;
-        current.updateScore();
-        updateScoreDiv();
-        hasWon = true;
-      } else {
-        if (move === 9) {
-          winnerDiv.textContent = `Tie!`;
-        } else {
-          currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
-          winnerDiv.textContent = `${current.name} turn to move`;
-        }
-      };
+    const updateScoreDiv = () => {
+      firstPlayerScoreDiv.textContent = `${players["player1"].name}: ${players["player1"].getScore()}`;
+      secondPlayerScoreDiv.textContent = `${players["player2"].name}: ${players["player2"].getScore()}`;
     }
-  })
 
-  newGameBtn.addEventListener("click", () => {
-    document.querySelector(".board").innerHTML = "";
-    currentPlayer = "player1";
-    hasWon = false;
+    boardDiv.addEventListener("click", function eventHandler(e) {
+      const target = e.target;
+      const x = target.dataset.x;
+      const y = target.dataset.y;
+      
+      if (gameBoard.board[x][y] === "-" && !hasWon) {
+        move++;
+        let current = players[currentPlayer];
+        gameBoard.updateBoard(x, y, current.gamePiece);
+        target.innerHTML = `${current.gamePiece}`;
+        if (gameBoard.checkForWin(current.gamePiece)) {
+          winnerDiv.textContent = `${current.name} wins the game!`;
+          current.updateScore();
+          updateScoreDiv();
+          hasWon = true;
+        } else {
+          if (move === 9) {
+            winnerDiv.textContent = `Tie!`;
+          } else {
+            currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
+            current = players[currentPlayer];
+            winnerDiv.innerHTML = `<span class="current-player">${current.name}</span> turn to move`;
+          }
+        };
+      }
+    })
+
+    newGameBtn.addEventListener("click", () => {
+      document.querySelector(".board").innerHTML = "";
+      currentPlayer = "player1";
+      hasWon = false;
+      newBoard();
+    });
+
+    updateScoreDiv();
     newBoard();
-  });
-
-  updateScoreDiv();
-  newBoard();
+  }
 }
 
 function initializeGame() {

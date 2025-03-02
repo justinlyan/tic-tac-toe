@@ -1,11 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 4rem;
+}
+
+dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  width: 75vh;
+  height: 75vh;
+  margin: 0 auto;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+}
+
+.winner {
+  text-align: center;
+}
+
+.current-player {
+  font-weight: bold;
+}
 
 .board {
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template: repeat(3, 30px) / repeat(3, 30px);
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
 .cell {
   cursor: pointer;
   background-color: grey;
   border: 1px solid black;
+  font-size: 8rem;
+  text-align: center;
 }
